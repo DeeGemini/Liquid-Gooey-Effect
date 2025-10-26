@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Gooey Effect - Page Transitions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- SVG Filter for Gooey Effect -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: none;">
+        <defs>
+            <filter id="gooey">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="
+                    1 0 0 0 0
+                    0 1 0 0 0
+                    0 0 1 0 0
+                    0 0 0 18 -7" result="gooey" />
+                <feBlend in="SourceGraphic" in2="gooey" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <header>
+            <h1>Liquid Gooey Effect</h1>
+            <p>Experience smooth, fluid page transitions and interactions</p>
+        </header>
+
+        <!-- Navigation Menu with Gooey Effect -->
+        <section class="demo-section">
+            <h2>Gooey Navigation</h2>
+            <nav class="gooey-nav">
+                <div class="nav-item" data-page="home">Home</div>
+                <div class="nav-item" data-page="about">About</div>
+                <div class="nav-item" data-page="services">Services</div>
+                <div class="nav-item" data-page="contact">Contact</div>
+            </nav>
+        </section>
+
+        <!-- Gooey Button -->
+        <section class="demo-section">
+            <h2>Gooey Button</h2>
+            <div class="gooey-button-container">
+                <button class="gooey-button">
+                    <span>Click Me</span>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                    <div class="bubble"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Gooey Loader -->
+        <section class="demo-section">
+            <h2>Gooey Loader</h2>
+            <div class="gooey-loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </section>
+
+        <!-- Page Transition Effect -->
+        <section class="demo-section">
+            <h2>Page Transition</h2>
+            <button class="transition-button" id="triggerTransition">
+                Trigger Page Transition
+            </button>
+        </section>
+
+        <!-- Interactive Blob -->
+        <section class="demo-section">
+            <h2>Interactive Gooey Blob</h2>
+            <div class="blob-container" id="blobContainer">
+                <div class="blob"></div>
+                <div class="blob"></div>
+                <div class="blob"></div>
+            </div>
+        </section>
+
+        <!-- Current Page Display -->
+        <section class="demo-section">
+            <div class="page-display" id="pageDisplay">
+                <h3>Current Page: <span id="currentPage">Home</span></h3>
+            </div>
+        </section>
+    </div>
+
+    <!-- Transition Overlay -->
+    <div class="transition-overlay" id="transitionOverlay">
+        <div class="liquid-blob blob1"></div>
+        <div class="liquid-blob blob2"></div>
+        <div class="liquid-blob blob3"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

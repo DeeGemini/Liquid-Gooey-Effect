@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Liquid / Gooey Effect — Demo</title>
+  <style>
+    :root{--bg:#0f1020}
+    html,body{height:100%;margin:0}
+    body{display:flex;align-items:center;justify-content:center;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#fff}
+    .stage{width:min(1000px,92vw);height:min(600px,72vh);position:relative;overflow:hidden;border-radius:12px;background:linear-gradient(180deg,#0b0b12 0%, #121224 100%);box-shadow:0 10px 30px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.02)}
+    .gooey{position:absolute;inset:0;display:block;filter:url(#goo)}
+    .blob{position:absolute;width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#7f00ff,#e100ff);mix-blend-mode:screen;transform-origin:center center}
+    .blob:nth-child(1){left:12%;top:28%;animation:move1 7s ease-in-out infinite}
+    .blob:nth-child(2){left:38%;top:18%;animation:move2 8s ease-in-out infinite}
+    .blob:nth-child(3){left:62%;top:32%;animation:move3 6.5s ease-in-out infinite}
+    .blob:nth-child(4){left:74%;top:58%;animation:move4 9s ease-in-out infinite}
+    @keyframes move1{0%{transform:translate(0,0) scale(1)}25%{transform:translate(40px,-20px) scale(1.05)}50%{transform:translate(0,30px) scale(.95)}75%{transform:translate(-20px,-10px) scale(1.02)}100%{transform:translate(0,0) scale(1)}}
+    @keyframes move2{0%{transform:translate(0,0) scale(1)}25%{transform:translate(-30px,20px) scale(1.03)}50%{transform:translate(0,-40px) scale(.98)}75%{transform:translate(30px,10px) scale(1.01)}100%{transform:translate(0,0) scale(1)}}
+    @keyframes move3{0%{transform:translate(0,0) scale(1)}25%{transform:translate(20px,30px) scale(.98)}50%{transform:translate(-30px,0) scale(1.04)}75%{transform:translate(10px,-20px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
+    @keyframes move4{0%{transform:translate(0,0) scale(1)}25%{transform:translate(-20px,-30px) scale(1.02)}50%{transform:translate(25px,10px) scale(.97)}75%{transform:translate(-30px,20px) scale(1.04)}100%{transform:translate(0,0) scale(1)}}
+    .caption{position:absolute;left:16px;bottom:12px;font-size:13px;opacity:.9}
+  </style>
+</head>
+<body>
+  <!-- SVG filter defs (invisible) -->
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="goo">
+      <!-- soft blur -->
+      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+      <!-- increase alpha so shapes merge (matrix last row multiplies alpha) -->
+      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo" />
+      <!-- keep the original colors on top -->
+      <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+    </filter>
+  </svg>
+
+  <div class="stage">
+    <div class="gooey">
+      <div class="blob"></div>
+      <div class="blob"></div>
+      <div class="blob"></div>
+      <div class="blob"></div>
+    </div>
+    <div class="caption">Pure HTML + CSS + SVG filter — open <code>index.html</code></div>
+  </div>
+
+</body>
+</html>

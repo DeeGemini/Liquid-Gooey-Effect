@@ -15,9 +15,9 @@ This mini project demonstrates how to use the `feGaussianBlur` and `feColorMatri
 
 ## 🌈 Preview
 
-![Liquid/Gooey Effect Preview](https://github.com/DeeGemini/Liquid-Gooey-Effect/blob/main/preview.gif?raw=true)
+![Liquid/Gooey Effect Preview](assets/preview.svg)
 
-*(Replace the link above with a real screenshot or GIF once available.)*
+*(If you have a GIF or animated preview you prefer, replace `assets/preview.svg` with `assets/preview.gif` or update the link accordingly.)*
 
 ---
 
@@ -77,6 +77,16 @@ Duplicate one of the blob elements in the `.gooey` container, for example:
 Adjust gooey strength (SVG filter):
 
 Inside the SVG filter's `feColorMatrix` values you may see something like `0 0 0 20 -10` — increasing the `20` will make blobs merge more strongly; the `-10` affects transparency. Be careful: large blur values increase rendering cost.
+
+---
+
+## 🧠 How it works
+
+- feGaussianBlur: blurs the elements to create soft edges. The `stdDeviation` controls the blur radius — bigger values produce more blending but cost more to render.
+- feColorMatrix: when used with a matrix like `0 0 0 20 -10` it amplifies alpha values so blurred shapes' alpha channels merge and produce the gooey "neck" between blobs. The last row of the 4x5 matrix affects alpha output.
+- Combined: blur first, then amplify alpha (color-matrix), and composite the original graphic on top. That order makes the shapes visually merge while preserving their colors.
+
+Tip: tweak `stdDeviation` and the color-matrix's multiplier to balance the merging strength and performance.
 
 ---
 

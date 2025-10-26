@@ -1,3 +1,7 @@
+// Configuration constants
+const TRANSITION_DURATION = 1000; // Duration of transition overlay in ms
+const TRANSITION_HIDE_DELAY = 500; // Delay before hiding overlay in ms
+
 // Page navigation tracking
 let currentPage = 'home';
 
@@ -25,8 +29,8 @@ function navigateToPage(page) {
         // Hide overlay after transition
         setTimeout(() => {
             overlay.classList.remove('active');
-        }, 500);
-    }, 1000);
+        }, TRANSITION_HIDE_DELAY);
+    }, TRANSITION_DURATION);
 }
 
 // Trigger transition button
@@ -59,6 +63,8 @@ document.querySelector('.gooey-button').addEventListener('click', function() {
 });
 
 // Add mouse move effect to blob container
+const BLOB_SENSITIVITY = 10; // Controls how much blobs move with mouse
+
 document.getElementById('blobContainer').addEventListener('mousemove', function(e) {
     const rect = this.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -66,8 +72,9 @@ document.getElementById('blobContainer').addEventListener('mousemove', function(
     
     const blobs = this.querySelectorAll('.blob');
     blobs.forEach((blob, index) => {
-        const offsetX = (x - rect.width / 2) / 10 * (index + 1);
-        const offsetY = (y - rect.height / 2) / 10 * (index + 1);
+        const multiplier = index + 1;
+        const offsetX = (x - rect.width / 2) / BLOB_SENSITIVITY * multiplier;
+        const offsetY = (y - rect.height / 2) / BLOB_SENSITIVITY * multiplier;
         blob.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
     });
 });

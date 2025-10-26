@@ -1,3 +1,10 @@
+:root {
+    --blob-move-up: -30px;
+    --blob-move-down: 30px;
+    --blob-scale-large: 1.2;
+    --blob-scale-small: 0.8;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -267,10 +274,10 @@ header p {
         transform: translateY(0) scale(1);
     }
     33% {
-        transform: translateY(-30px) scale(1.2);
+        transform: translateY(var(--blob-move-up)) scale(var(--blob-scale-large));
     }
     66% {
-        transform: translateY(30px) scale(0.8);
+        transform: translateY(var(--blob-move-down)) scale(var(--blob-scale-small));
     }
 }
 

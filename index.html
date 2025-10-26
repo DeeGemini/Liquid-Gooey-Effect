@@ -20,16 +20,21 @@
     @keyframes move3{0%{transform:translate(0,0) scale(1)}25%{transform:translate(20px,30px) scale(.98)}50%{transform:translate(-30px,0) scale(1.04)}75%{transform:translate(10px,-20px) scale(.96)}100%{transform:translate(0,0) scale(1)}}
     @keyframes move4{0%{transform:translate(0,0) scale(1)}25%{transform:translate(-20px,-30px) scale(1.02)}50%{transform:translate(25px,10px) scale(.97)}75%{transform:translate(-30px,20px) scale(1.04)}100%{transform:translate(0,0) scale(1)}}
     .caption{position:absolute;left:16px;bottom:12px;font-size:13px;opacity:.9}
+    /* control panel */
+    .controls{position:absolute;right:12px;top:12px;background:rgba(255,255,255,0.04);backdrop-filter:blur(6px);padding:10px;border-radius:8px;font-size:13px;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.5)}
+    .controls label{display:block;font-size:12px;margin-bottom:6px}
+    .controls input[type=range]{width:180px}
+    .controls .value{font-weight:600;margin-left:8px}
   </style>
 </head>
 <body>
   <!-- SVG filter defs (invisible) -->
-  <svg width="0" height="0" style="position:absolute">
-    <filter id="goo">
-      <!-- soft blur -->
-      <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="goo" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- soft blur (id set so JS can update it) -->
+      <feGaussianBlur id="g-blur" in="SourceGraphic" stdDeviation="12" result="blur" />
       <!-- increase alpha so shapes merge (matrix last row multiplies alpha) -->
-      <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo" />
+      <feColorMatrix id="g-matrix" in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="goo" />
       <!-- keep the original colors on top -->
       <feComposite in="SourceGraphic" in2="goo" operator="atop" />
     </filter>
@@ -43,7 +48,49 @@
       <div class="blob"></div>
     </div>
     <div class="caption">Pure HTML + CSS + SVG filter — open <code>index.html</code></div>
+    <div class="controls" aria-label="Gooey controls">
+      <label>Blur: <span id="blurVal" class="value">12</span>
+        <input id="blur" type="range" min="0" max="40" value="12" />
+      </label>
+      <label>Alpha multiplier: <span id="alphaVal" class="value">20</span>
+        <input id="alpha" type="range" min="1" max="50" value="20" />
+      </label>
+      <label>Alpha offset: <span id="offsetVal" class="value">-10</span>
+        <input id="offset" type="range" min="-40" max="0" value="-10" />
+      </label>
+    </div>
   </div>
+
+  <script>
+    // Controls hookup: update SVG filter attributes live
+    const blurInput = document.getElementById('blur');
+    const alphaInput = document.getElementById('alpha');
+    const offsetInput = document.getElementById('offset');
+    const blurVal = document.getElementById('blurVal');
+    const alphaVal = document.getElementById('alphaVal');
+    const offsetVal = document.getElementById('offsetVal');
+    const feBlur = document.getElementById('g-blur');
+    const feMatrix = document.getElementById('g-matrix');
+
+    function updateFilter(){
+      const b = blurInput.value;
+      const a = alphaInput.value;
+      const o = offsetInput.value;
+      blurVal.textContent = b;
+      alphaVal.textContent = a;
+      offsetVal.textContent = o;
+      feBlur.setAttribute('stdDeviation', b);
+      // replace only the last row (alpha) of the 4x5 matrix
+      const matrix = `1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${a} ${o}`;
+      feMatrix.setAttribute('values', matrix);
+    }
+
+    blurInput.addEventListener('input', updateFilter);
+    alphaInput.addEventListener('input', updateFilter);
+    offsetInput.addEventListener('input', updateFilter);
+    // initialize
+    updateFilter();
+  </script>
 
 </body>
 </html>
